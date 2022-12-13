@@ -6,21 +6,10 @@ const copy = async () => {
   try {
     readdir(`${__dirname}/files`)
       .then(async (files) => {
-        if (files.length) {
-          await mkdir(`${__dirname}/files_copy`);
-          return files;
-        }
-      })
-      .then((files) => {
-        files.forEach(async (file) => {
-          await copyFile(
-            `${__dirname}/files/${file}`,
-            `${__dirname}/files_copy/${file}`,
-          );
-        });
+        console.log(files);
+        return files;
       })
       .catch((e) => {
-        console.log('e: ', e);
         throw new Error('FS operation failed');
       });
   } catch (err) {
