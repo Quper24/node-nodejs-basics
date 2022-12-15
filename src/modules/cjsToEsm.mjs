@@ -1,20 +1,23 @@
 import path from 'path';
 import { release, version } from 'node:os';
 import { createServer as createServerHttp } from 'node:http';
+import { readFile } from 'node:fs/promises';
 import './files/c.js';
 import { URL } from 'url'; // in Browser, the URL in native accessible on window
 const __filename = new URL('', import.meta.url).pathname;
-const __dirname = new URL('.', import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
 
 const random = Math.random();
 
 let unknownObject;
 
-// await import(random > 0.5 ? './files/a.json' : './files/b.json').then(
-//   ({ prop: data }) => {
-//     unknownObject = data;
-//   },
-// );
+
+try {
+  const filePath = new URL(random > 0.5 ? './files/a.json' : './files/b.json', import.meta.url).pathname;
+  unknownObject = await readFile(filePath, { encoding: 'utf8' });
+} catch (err) {
+  console.error(err.message);
+}
 
 console.log(`Release ${release()}`);
 console.log(`Version ${version()}`);
